@@ -2384,6 +2384,20 @@ export class Dispatcher {
     )
   }
 
+    /**
+   *  update the manual resolution method for a file
+   */
+    public async openMergeTool(
+      repository: Repository,
+      path: string
+    ) {
+      return await this.appStore._openMergeTool(
+        repository,
+        path,
+        (args: Popup) => this.showPopup(args)
+      )
+    }
+
   public async confirmOrForcePush(repository: Repository) {
     const { askForConfirmationOnForcePush } = this.appStore.getState()
 

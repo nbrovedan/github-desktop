@@ -185,6 +185,7 @@ import {
   checkoutCommit,
   getRemoteURL,
   getGlobalConfigPath,
+  openMergeTool
 } from '../git'
 import {
   installGlobalLFSFilters,
@@ -6806,6 +6807,20 @@ export class AppStore extends TypedBaseStore<IAppState> {
 
     this.emitUpdate()
   }
+  
+  /** This shouldn't be called directly. See `Dispatcher`. */
+  public async _openMergeTool(
+    repository: Repository,
+    path: string,
+    popup: (popup: Popup) => void
+  ) {
+    const entry = await openMergeTool(repository, path, popup)
+    if(entry != null){
+      log.error('[_openMergeTool] - Unable to open mergetool')
+    }
+    this.emitUpdate()
+  }
+  
 
   /**
    * Updates the multi commit operation conflict step state as the manual

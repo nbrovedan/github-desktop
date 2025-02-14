@@ -394,6 +394,13 @@ const makeMarkerConflictDropdownClickHandler = (
     const absoluteFilePath = join(repository.path, relativeFilePath)
     const items: IMenuItem[] = [
       {
+        label: 'Open in mergetool',
+        action: async() => await dispatcher.openMergeTool(
+            repository,
+            relativeFilePath
+          )
+      },
+      {
         label: OpenWithDefaultProgramLabel,
         action: () => openFile(absoluteFilePath, dispatcher),
       },

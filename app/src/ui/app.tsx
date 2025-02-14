@@ -182,6 +182,7 @@ import { webUtils } from 'electron'
 import { showTestUI } from './lib/test-ui-components/test-ui-components'
 import { ConfirmCommitFilteredChanges } from './changes/confirm-commit-filtered-changes-dialog'
 import { AboutTestDialog } from './about/about-test-dialog'
+import { InfoDialog } from './info-dialog'
 
 const MinuteInMilliseconds = 1000 * 60
 const HourInMilliseconds = MinuteInMilliseconds * 60
@@ -2486,13 +2487,22 @@ export class App extends React.Component<IAppProps, IAppState> {
           />
         )
       }
-      case PopupType.TestAbout:
+      case PopupType.TestAbout: {
         return (
           <AboutTestDialog
             key="about"
             onDismissed={onPopupDismissedFn}
             onShowAcknowledgements={this.showAcknowledgements}
             onShowTermsAndConditions={this.showTermsAndConditions}
+          />
+        )
+      }
+      case PopupType.OpenMergeTool:
+        return (
+          <InfoDialog
+              key="info-dialog"
+              message={popup.message}
+              onDismissed={onPopupDismissedFn}
           />
         )
       default:

@@ -97,6 +97,7 @@ export enum PopupType {
   TestIcons = 'TestIcons',
   ConfirmCommitFilteredChanges = 'ConfirmCommitFilteredChanges',
   TestAbout = 'TestAbout',
+  OpenMergeTool = 'OpenMergeTool',
 }
 
 interface IBasePopup {
@@ -432,6 +433,10 @@ export type PopupDetail =
     }
   | {
       type: PopupType.TestAbout
+    }
+  |  {
+      type: PopupType.OpenMergeTool
+      message: string
     }
 
 export type Popup = IBasePopup & PopupDetail
