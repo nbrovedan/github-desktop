@@ -7,6 +7,8 @@ interface IDialogContentProps {
    */
   readonly className?: string
 
+  readonly style?: string
+
   /**
    * An optional function that will be passed a reference do the
    * div container element of the DialogContents component (or null if
@@ -27,9 +29,9 @@ interface IDialogContentProps {
 export class DialogContent extends React.Component<IDialogContentProps, {}> {
   public render() {
     const className = classNames('dialog-content', this.props.className)
-
+    
     return (
-      <div className={className} ref={this.props.onRef}>
+      <div className={className} ref={this.props.onRef} >
         {this.props.children}
       </div>
     )

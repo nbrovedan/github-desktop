@@ -2394,7 +2394,7 @@ export class Dispatcher {
       return await this.appStore._openMergeTool(
         repository,
         path,
-        (args: Popup) => this.showPopup(args)
+        this
       )
     }
 

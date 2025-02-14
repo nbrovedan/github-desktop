@@ -5,7 +5,8 @@ import { GitError } from 'dugite'
 import { Repository } from '../../models/repository'
 import { pathExists } from '../../ui/lib/path-exists'
 import { spawn } from 'child_process'
-import { Popup, PopupType } from '../../models/popup'
+import { Dispatcher } from '../../ui/dispatcher'
+import { PopupType } from '../../models/popup'
 
 export enum MergeResult {
   /** The merge completed successfully */
@@ -131,41 +132,19 @@ export async function isSquashMsgSet(repository: Repository): Promise<boolean> {
 export async function openMergeTool(
   repository: Repository,
   filePath: string,
-  popup: (popup: Popup) => void
+  dispatcher: Dispatcher
 ): Promise<string | null> {
-  popup({type: PopupType.OpenMergeTool, message: 'Mergetool is opening...'})
-  /*const process = await git(
-    ['mergetool', '--no-prompt', filePath],
-    repository.path,
-    'openMergeTool',
-    { 
-      // - 1 is returned if a common ancestor cannot be resolved
-      // - 128 is returned if a ref cannot be found
-      //   "warning: ignoring broken ref refs/remotes/origin/main."
-      successExitCodes: new Set([0, 1, 128]),
-      env: {
-        GIT_MERGE_TOOL_KEEP_BACKUP: 'true'
-      }
-    }
-  )
-  log.info('openMergeTool: external tool closed')
-  if (process.exitCode === 1 || process.exitCode === 128) {
-    return null
-  }
-  return process.stdout.trim()*/
-
-  return new Promise((resolve, reject) => {
-    // Executa o mergetool manualmente sem aguardar a conclusão
+    dispatcher.showPopup({type: PopupType.OpenMergeTool, message: 'Continue in external mergetool...'})
+    return new Promise((resolve, reject) => {
+    
     const process = spawn('git', ['mergetool', '--no-prompt', filePath], {
       cwd: repository.path,
       stdio: 'inherit'
     })
-
-    // Detecta quando o processo fecha, independente do motivo
+    
     process.on('exit', (code) => {
       log.info(`openMergeTool: external tool closed with code ${code}`)
-
-      // Se for código 1 ou 128, retorna null
+      dispatcher.closePopup(PopupType.OpenMergeTool)
       if (code === 1 || code === 128) {
         resolve(null)
       } else {
@@ -174,6 +153,7 @@ export async function openMergeTool(
     })
 
     process.on('error', (err) => {
+      dispatcher.closePopup(PopupType.OpenMergeTool)
       log.error(`openMergeTool error: ${err.message}`)
       reject(err)
     })
