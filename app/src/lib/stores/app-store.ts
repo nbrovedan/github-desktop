@@ -344,6 +344,7 @@ import {
   migratedCustomIntegration,
 } from '../custom-integration'
 import { updateStore } from '../../ui/lib/update-store'
+import { Dispatcher } from '../../ui/dispatcher'
 
 const LastSelectedRepositoryIDKey = 'last-selected-repository-id'
 
@@ -6812,9 +6813,9 @@ export class AppStore extends TypedBaseStore<IAppState> {
   public async _openMergeTool(
     repository: Repository,
     path: string,
-    popup: (popup: Popup) => void
+    dispatcher: Dispatcher
   ) {
-    const entry = await openMergeTool(repository, path, popup)
+    const entry = await openMergeTool(repository, path, dispatcher)
     if(entry != null){
       log.error('[_openMergeTool] - Unable to open mergetool')
     }

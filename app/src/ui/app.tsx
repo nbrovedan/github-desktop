@@ -182,7 +182,7 @@ import { webUtils } from 'electron'
 import { showTestUI } from './lib/test-ui-components/test-ui-components'
 import { ConfirmCommitFilteredChanges } from './changes/confirm-commit-filtered-changes-dialog'
 import { AboutTestDialog } from './about/about-test-dialog'
-import { InfoDialog } from './info-dialog'
+import { MergeToolDialog } from './mergetool-dialog'
 
 const MinuteInMilliseconds = 1000 * 60
 const HourInMilliseconds = MinuteInMilliseconds * 60
@@ -2499,7 +2499,7 @@ export class App extends React.Component<IAppProps, IAppState> {
       }
       case PopupType.OpenMergeTool:
         return (
-          <InfoDialog
+          <MergeToolDialog
               key="info-dialog"
               message={popup.message}
               onDismissed={onPopupDismissedFn}
